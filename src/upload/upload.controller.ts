@@ -39,8 +39,6 @@ export class UploadController {
   uploadArquivoSimples(@UploadedFile() arq: Express.Multer.File) {
     console.log(arq);
 
-    return {
-      estado: 'ok',
-    };
+    return this.uploadService.responderInformacaoArquivo(arq);
   }
 }
