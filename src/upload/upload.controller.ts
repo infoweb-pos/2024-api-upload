@@ -2,10 +2,12 @@ import {
   Controller,
   Post,
   UploadedFile,
+  UploadedFiles,
   UseInterceptors,
 } from '@nestjs/common';
-import { FileInterceptor } from '@nestjs/platform-express';
+import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import {
+  ApiBadRequestResponse,
   ApiBody,
   ApiConsumes,
   ApiOperation,
@@ -40,5 +42,39 @@ export class UploadController {
     console.log(arq);
 
     return this.uploadService.responderInformacaoArquivo(arq);
+  }
+
+  @Post('arquivos')
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        arquivos: {
+          type: 'array',
+          items: {
+            type: 'string',
+            format: 'binary',
+          },
+        },
+      },
+    },
+  })
+  @ApiResponse({
+    status: 201,
+    description: 'Arquivo(s) enviado(s) com sucesso.',
+  })
+  @ApiBadRequestResponse({
+    status: 400,
+    description: 'Erro no envio de arquivos.',
+  })
+  @UseInterceptors(FilesInterceptor('arquivos'))
+  uploadArquivos(@UploadedFiles() arquivos: Array<Express.Multer.File>) {
+    return {
+      estado: 'ok',
+      data: {
+        quantidade: arquivos?.length,
+      },
+    };
   }
 }
