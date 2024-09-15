@@ -70,11 +70,6 @@ export class UploadController {
   })
   @UseInterceptors(FilesInterceptor('arquivos'))
   uploadArquivos(@UploadedFiles() arquivos: Array<Express.Multer.File>) {
-    return {
-      estado: 'ok',
-      data: {
-        quantidade: arquivos?.length,
-      },
-    };
+    return this.uploadService.responderInformacoesArquivos(arquivos);
   }
 }

@@ -13,4 +13,22 @@ export class UploadService {
       },
     };
   }
+
+  responderInformacoesArquivos(arquivos: Array<Express.Multer.File>) {
+    const informacoes = arquivos.map((arquivo) => {
+      return {
+        nome: arquivo.originalname,
+        tamanho: arquivo.size,
+        mimetype: arquivo.mimetype,
+        encode: arquivo.encoding,
+      };
+    });
+    return {
+      estado: 'ok',
+      dados: {
+        quantidade: arquivos?.length,
+        arquivos: informacoes,
+      },
+    };
+  }
 }
