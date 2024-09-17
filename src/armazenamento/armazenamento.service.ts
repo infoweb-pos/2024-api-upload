@@ -49,6 +49,7 @@ export class ArmazenamentoService {
         },
       };
     } catch (erro) {
+      console.log('erro 404');
       return null;
     }
   }

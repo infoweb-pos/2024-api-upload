@@ -1,6 +1,7 @@
 import {
   Controller,
   Get,
+  NotFoundException,
   Param,
   Post,
   UploadedFile,
@@ -44,7 +45,7 @@ export class ArmazenamentoController {
 
   @Get(':nome')
   @ApiOperation({ summary: 'Endpoint para receber arquivo' })
-  @ApiResponse({ status: 201, description: 'Arquivo enviado com sucesso.' })
+  @ApiResponse({ status: 200, description: 'Arquivo enviado com sucesso.' })
   @ApiResponse({ status: 404, description: 'Arquivo não encontrado.' })
   ler(@Param('nome') nome: string) {
     return this.armazenamentoService.pegar(nome);
