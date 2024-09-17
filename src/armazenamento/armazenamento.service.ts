@@ -36,4 +36,20 @@ export class ArmazenamentoService {
       },
     };
   }
+
+  async pegar(nome: string) {
+    const imagem = this.imagens.filter((item) => item.id === nome)[0];
+    try {
+      const arquivo = await fs.readFile(imagem.armazenamento);
+      return {
+        estado: 'ok',
+        dados: {
+          informacao: imagem,
+          buffer: arquivo,
+        },
+      };
+    } catch (erro) {
+      return null;
+    }
+  }
 }

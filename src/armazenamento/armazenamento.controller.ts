@@ -1,5 +1,7 @@
 import {
   Controller,
+  Get,
+  Param,
   Post,
   UploadedFile,
   UseInterceptors,
@@ -38,5 +40,13 @@ export class ArmazenamentoController {
   @ApiResponse({ status: 400, description: 'Erro no envio do arquivo.' })
   salvar(@UploadedFile() arq: Express.Multer.File) {
     return this.armazenamentoService.salvarEmDisco(arq);
+  }
+
+  @Get(':nome')
+  @ApiOperation({ summary: 'Endpoint para receber arquivo' })
+  @ApiResponse({ status: 201, description: 'Arquivo enviado com sucesso.' })
+  @ApiResponse({ status: 404, description: 'Arquivo não encontrado.' })
+  ler(@Param('nome') nome: string) {
+    return this.armazenamentoService.pegar(nome);
   }
 }
