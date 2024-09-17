@@ -1,3 +1,7 @@
+# others
+/uploads
+/notas_de_aulas
+
 # lock files
 package-lock.json
 yarn.lock
