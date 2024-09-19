@@ -1,11 +1,14 @@
 import {
   Controller,
+  Get,
+  Param,
   Post,
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
 import { NuvemService } from './nuvem.service';
 import {
+  ApiBadRequestResponse,
   ApiBody,
   ApiConsumes,
   ApiOperation,
@@ -38,5 +41,31 @@ export class NuvemController {
   @ApiResponse({ status: 400, description: 'ERRO no upload do arquivo.' })
   upload(@UploadedFile() arquivo: Express.Multer.File) {
     return this.nuvemService.upload(arquivo);
+  }
+
+  @Get('nome/:arquivo_nome')
+  @ApiOperation({
+    summary: 'pegar um arquivo pelo seu nome que esta armazenado na nuvem',
+  })
+  @ApiResponse({ status: 201, description: 'Download de arquivo concluído.' })
+  @ApiBadRequestResponse({
+    status: 404,
+    description: 'ERRO arquivo não encontrado.',
+  })
+  downloadByNome(@Param('arquivo_nome') arquivo_nome: string) {
+    return this.nuvemService.pegarPorNome(arquivo_nome);
+  }
+
+  @Get('id/:arquivo_id')
+  @ApiOperation({
+    summary: 'pegar um arquivo pelo seu id que esta armazenado na nuvem',
+  })
+  @ApiResponse({ status: 201, description: 'Download de arquivo concluído.' })
+  @ApiBadRequestResponse({
+    status: 404,
+    description: 'ERRO arquivo não encontrado.',
+  })
+  downloadById(@Param('arquivo_id') arquivo_id: string) {
+    return this.nuvemService.pegarPorID(arquivo_id);
   }
 }

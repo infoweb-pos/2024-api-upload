@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { ImageKitService } from 'imagekit-nestjs';
 
 class ArquivoDto {
@@ -42,5 +42,21 @@ export class NuvemService {
       estado: 'ok',
       data: informacao,
     };
+  }
+
+  pegarPorNome(nome: string) {
+    const informacao = this.arquivos.filter((item) => item.nome === nome);
+    if (informacao.length === 0) {
+      throw new NotFoundException(`Arquivo (${nome}) não encontrado.`);
+    }
+    return informacao[0];
+  }
+
+  pegarPorID(id: string) {
+    const informacao = this.arquivos.filter((item) => item.id === id);
+    if (informacao.length === 0) {
+      throw new NotFoundException(`Arquivo (${id}) não encontrado.`);
+    }
+    return informacao[0];
   }
 }
